@@ -21,6 +21,16 @@ int string_len(char *s)
 
 }
 
+unsigned int hashcode(char *s) {
+    unsigned int hash = 0;
+    while (*s) {
+        hash = hash * 31 + (unsigned char)(*s);
+        s++;
+    }
+    return hash;
+}
+
+
 // Compare strings "s1" and "s2". It returns less than, equal to or greater than zero
 // if "s1" is found to be less than, match, or larger than "s2" alphabetically.
 // For example, string_cmp("aa", "aaa") should return a negative number
