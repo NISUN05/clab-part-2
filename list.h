@@ -1,20 +1,18 @@
 #pragma once
 #include <stdbool.h>
 
-// Key-value struct
 typedef struct {
     char *key;
     int val;
 } kv_t;
 
-// Linked list node storing key-value directly
 typedef struct lnode {
     char *key;
     int val;
     struct lnode *next;
 } lnode_t;
 
-// Function declarations
+// Function prototypes
 void list_init(lnode_t **headdp);
 void sum_accum(int *existing_val, int new_val);
 bool list_insert_with_accum(lnode_t **headdp, char *key, int val,
