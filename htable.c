@@ -15,7 +15,7 @@ htable_t *htable_create(unsigned int capacity) {
     assert(ht->arr != NULL);
 
     for (unsigned int i = 0; i < capacity; i++)
-        ht->arr[i] = NULL;  // initialize empty linked lists
+        ht->arr[i] = NULL;
 
     return ht;
 }
@@ -23,21 +23,20 @@ htable_t *htable_create(unsigned int capacity) {
 void htable_put(htable_t *ht, char *key, int val,
                 void (*accum)(int *, int)) {
     unsigned int i = hashcode(key) % ht->arr_capacity;
-
     if (list_insert_with_accum(&ht->arr[i], key, val, accum))
-        ht->size += 1;  // increment only if new key
+        ht->size += 1;
 }
 
 int htable_get(htable_t *ht, char *key) {
     unsigned int i = hashcode(key) % ht->arr_capacity;
-    return list_find(ht->arr[i], key);  // return int, not int *
+    return list_find(ht->arr[i], key);
 }
 
 int htable_get_all_tuples(htable_t *ht, kv_t *tuples, int max) {
     int count = 0;
-    for (unsigned int i = 0; i < ht->arr_capacity && count < max; i++) {
+    for (unsigned int i = 0; i < ht->arr_capacity && count < max; i++)
         count += list_get_all_tuples(ht->arr[i], &tuples[count], max - count);
-    }
     return count;
 }
+
 
