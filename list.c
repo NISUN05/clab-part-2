@@ -14,7 +14,6 @@
 // To initialize a list, this function sets its head pointer to NULL.
 // This function takes as its argument "headdp", a double pointer that 
 // points to the head pointer to be initialized.
-ht->arr[i] = NULL; 
 void list_init(lnode_t **headdp)
 {
   assert(headdp != NULL);
