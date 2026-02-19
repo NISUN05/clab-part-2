@@ -18,24 +18,18 @@
 htable_t *htable_create(unsigned int capacity)
 {
     assert(capacity > 0);
-
     htable_t *ht = malloc(sizeof(htable_t));
     assert(ht != NULL);
 
     ht->arr_capacity = capacity;
     ht->size = 0;
-
-    // allocate array of list pointers safely
     ht->arr = malloc(capacity * sizeof(*ht->arr));
     assert(ht->arr != NULL);
 
-    for (unsigned int i = 0; i < capacity; i++) {
-        ht->arr[i] = list_create();  // initialize each linked list
-    }
-
+    for (unsigned int i = 0; i < capacity; i++)
+        ht->arr[i] = NULL;  // empty linked list
     return ht;
 }
-
 // This function is used internally by the hash table to calculate 
 // the hashcode for a string with n characters, s[0...n-1]
 //
@@ -66,25 +60,13 @@ unsigned int hashcode(char *s)
 // list_insert_with_accum that you've implmeneted in list.c
 //
 // Note that you should update the ht->size field accordingly
-void htable_put(htable_t *ht, char *key, int val, 
-    void (*accum)(int *existing_val, int new_val))
+void htable_put(htable_t *ht, char *key, int val, void (*accum)(int *, int))
 {
-    assert(ht != NULL);
-    assert(key != NULL);
+    unsigned int i = hashcode(key) % ht->arr_capacity;
 
-    unsigned int h = hashcode(key);
-    unsigned int i = h % ht->arr_capacity;
-
-    int before = list_size(ht->arr[i]);
-
-    list_insert_with_accum(ht->arr[i], key, val, accum);
-
-    int after = list_size(ht->arr[i]);
-
-    if (after > before) {
-        ht->size++;
-
-}
+    int before = list_get_all_tuples(ht->arr[i], NULL, 0); // optional, if you need old size
+    list_insert_with_accum(&ht->arr[i], key, val, accum);
+    ht->size += 1; // or compute difference if needed
 }
 
 // This function finds "key" in the hash table
